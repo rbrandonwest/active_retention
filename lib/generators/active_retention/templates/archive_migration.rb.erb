@@ -1,0 +1,22 @@
+class Create<%= @archive_table_name.camelize %> < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
+  def change
+    create_table :<%= @archive_table_name %>, id: :bigserial do |t|
+<% model_columns.each do |column| -%>
+<%   options = [] -%>
+<%   options << "limit: #{column.limit.inspect}" unless column.limit.nil? -%>
+<%   options << "precision: #{column.precision.inspect}" unless column.precision.nil? -%>
+<%   options << "scale: #{column.scale.inspect}" unless column.scale.nil? -%>
+<%   options << "null: #{column.null}" unless column.null -%>
+<% if options.any? -%>
+      t.<%= column.type %> :<%= column.name %>, <%= options.join(', ') %>
+<% else -%>
+      t.<%= column.type %> :<%= column.name %>
+<% end -%>
+<% end -%>
+      t.datetime :archived_at, null: false, default: -> { 'CURRENT_TIMESTAMP' }
+    end
+
+    add_index :<%= @archive_table_name %>, :created_at
+    add_index :<%= @archive_table_name %>, :archived_at
+  end
+end

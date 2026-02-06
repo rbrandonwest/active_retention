@@ -1,0 +1,11 @@
+*.gem
+*.rbc
+.bundle/
+vendor/bundle/
+Gemfile.lock
+pkg/
+tmp/
+spec/reports/
+.byebug_history
+.ruby-version
+.ruby-gemset
